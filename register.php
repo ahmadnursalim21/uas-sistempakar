@@ -26,7 +26,7 @@ if (isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register | Page</title>
-    <link rel="stylesheet" href="../public/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="public/bootstrap/css/bootstrap.css">
 </head>
 
 <body>
@@ -60,7 +60,7 @@ if (isset($_POST['submit'])) {
     </div>
 
 
-    <script src="../public/bootstrap/js/bootstrap.js"></script>
+    <script src="public/bootstrap/js/bootstrap.js"></script>
 </body>
 
 </html>

@@ -16,7 +16,7 @@
     <?php require "layouts/header.php" ?>
     <div class="container d-flex">
         <div>
-            <h2>Hallo 👋 <?= $_SESSION['username'] ?> </h2>
+            <h2>Hallo </h2>
             <p>Cek hobimu apakah seseuai dengan jurusan yang kamu ingin kan</p>
             <a href="diagnosa/diagnosa.php" class="btn btn-primary">Cek sekarang</a>
         </div>
