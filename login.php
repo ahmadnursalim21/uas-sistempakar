@@ -1,6 +1,6 @@
 <?php
 session_start();
-require "../database/database.php";
+require "database/database.php";
 
 if (isset($_POST["submit"])) {
     $email = $_POST["email"];
@@ -23,7 +23,7 @@ if (isset($_POST["submit"])) {
             $_SESSION['username'] = $row['name'];
 
             // Redirect ke halaman utama
-            header("Location: ../admin/");
+            header("Location: admin/");
             exit;
         } else {
             // Password salah

@@ -18,7 +18,7 @@
         <div>
             <h2>Hallo </h2>
             <p>Cek hobimu apakah seseuai dengan jurusan yang kamu ingin kan</p>
-            <a href="diagnosa/diagnosa.php" class="btn btn-primary">Cek sekarang</a>
+            <a href="pilihHobi.php" class="btn btn-primary">Cek sekarang</a>
         </div>
         <div>
             <img src="images/icon.png" alt="Gambar Atlate" style="width: 300px;">

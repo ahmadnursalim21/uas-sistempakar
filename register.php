@@ -1,5 +1,5 @@
 <?php
-require "../database/database.php";
+require "database/database.php";
 if (isset($_POST['submit'])) {
     $username = $_POST['username'];
     $email = $_POST['email'];

@@ -11,7 +11,7 @@
 
     <h3 class="mb-4">Form Pemilihan Hobi</h3>
 
-    <form action="simpan_hobi.php" method="post">
+    <form action="simpanHobi.php" method="post">
         <div class="mb-3">
             <label for="hobi" class="form-label">Pilih Hobi Anda:</label>
             <select class="form-select" name="hobi[]" id="hobi" multiple required>

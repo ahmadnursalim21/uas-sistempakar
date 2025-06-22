@@ -1,3 +1,11 @@
+<?php
+require "../../database/database.php";
+
+$sql = "SELECT * FROM hobi";
+$result = mysqli_query($conn, $sql);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,30 +46,27 @@
         </div>
         <div class="mt-4 ms-3">
             <h5>Data Pengguna Terbaru</h5>
+            <a href="addHobi.php" class="btn btn-primary">Tambah Hobi</a>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped">
                     <thead class="table-dark">
                         <tr>
-                            <th>#</th>
-                            <th>Nama</th>
-                            <th>Hobi Dipilih</th>
-                            <th>Rekomendasi Jurusan</th>
+                            <th>ID Hobi</th>
+                            <th>Nama Hobi</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <?php foreach ($result as $r): ?>
                         <tr>
-                            <td>1</td>
-                            <td>Andi</td>
-                            <td>Menggambar, Bermusik</td>
-                            <td>Desain Komunikasi Visual, Seni Musik</td>
+                            <td><?= $r['id'] ?></td>
+                            <td><?= $r['nama'] ?></td>
+                            <td>
+                                <a href="" class="btn btn-success">Edit</a>
+                                <a href="" class="btn btn-danger">Hapus</a>
+                            </td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Budi</td>
-                            <td>Coding, Membaca</td>
-                            <td>Informatika, Ilmu Komunikasi</td>
-                        </tr>
-                        <!-- Tambah baris lainnya -->
+                        <?php endforeach ?>
                     </tbody>
                 </table>
             </div>
