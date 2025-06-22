@@ -1,24 +1,29 @@
 <?php
-// koneksi ke database
+session_start();
 require "database/database.php";
-// id pengguna login (misal: 1)
-$id_pengguna = 1;
+// Ambil ID pengguna dari session login, bukan dari POST
+if (!isset($_SESSION['user_id'])) {
+    echo "<script>alert('Anda belum login.'); window.location.href='login.php';</script>";
+    exit;
+}
 
+$id_pengguna = $_SESSION['user_id'];
+
+// Ambil semua ID hobi milik pengguna
 $sql = "
-SELECT 
-    jurusan.id,
-    jurusan.nama,
-    SUM(relasi_hobi_jurusan.tingkat_kecocokan) AS skor_total
-FROM hobi_users
-JOIN relasi_hobi_jurusan ON hobi_users.id_hobi = relasi_hobi_jurusan.id_hobi
-JOIN jurusan ON relasi_hobi_jurusan.id_jurusan = jurusan.id
-WHERE hobi_users.id_pengguna = $id_pengguna
-GROUP BY jurusan.id
-ORDER BY skor_total DESC
-LIMIT 5
+    SELECT jurusan.id, jurusan.nama, SUM(relasi.tingkat_kecocokan) AS total_skor
+    FROM hobi_users
+    JOIN relasi_hobi_jurusan AS relasi ON hobi_users.id_hobi = relasi.id_hobi
+    JOIN jurusan ON jurusan.id = relasi.id_jurusan
+    WHERE hobi_users.id_pengguna = ?
+    GROUP BY jurusan.id
+    ORDER BY total_skor DESC
 ";
 
-$result = $conn->query($sql);
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id_pengguna);
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -27,29 +32,37 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <title>Rekomendasi Jurusan</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="public/bootstrap/css/bootstrap.css">
 </head>
 
-<body class="container mt-5">
+<body>
 
-    <h3>Rekomendasi Jurusan untuk Anda</h3>
+    <?php require "layouts/header.php" ?>
 
-    <?php if ($result->num_rows > 0): ?>
-    <div class="list-group mt-4">
-        <?php while ($row = $result->fetch_assoc()): ?>
-        <div class="list-group-item d-flex justify-content-between align-items-center">
-            <div>
-                <h5 class="mb-1"><?= htmlspecialchars($row['nama']) ?></h5>
-                <small>Skor Kecocokan: <?= $row['skor_total'] ?></small>
+    <div class="container mt-5">
+
+
+        <h3>Hasil Rekomendasi Jurusan</h3>
+
+        <?php if ($result->num_rows > 0): ?>
+        <div class="list-group mt-3">
+            <?php while ($row = $result->fetch_assoc()): ?>
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-1"><?= htmlspecialchars($row['nama']) ?></h5>
+                    <small>Skor Kecocokan: <?= $row['total_skor'] ?></small>
+                </div>
+                <a href="detailJurusan.php?id=<?= $row['id'] ?>" class="btn btn-info btn-sm">Lihat Detail</a>
             </div>
-            <a href="detail_jurusan.php?id=<?= $row['id'] ?>" class="btn btn-info btn-sm">Lihat Detail</a>
+            <?php endwhile; ?>
         </div>
-        <?php endwhile; ?>
+        <?php else: ?>
+        <div class="alert alert-warning mt-3">Tidak ada jurusan yang cocok. Silakan pilih hobi terlebih dahulu.</div>
+        <?php endif; ?>
     </div>
-    <?php else: ?>
-    <div class="alert alert-warning mt-4">Belum ada rekomendasi. Silakan pilih hobi terlebih dahulu.</div>
-    <?php endif; ?>
 
+    <?php require "layouts/footer.php" ?>
+    <script src="public/bootstrap/js/bootstrap.js"></script>
 </body>
 
 </html>

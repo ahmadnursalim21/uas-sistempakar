@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php session_start();
+$id_pengguna = $_SESSION['user_id'];
+$_SESSION['username']
+?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
         <a class="navbar-brand" href="index.php">Sistem Pakar</a>
@@ -13,9 +16,6 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="faq.php">FAQ</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="diagnosa/diagnosa.php">Diagnosa</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="about.php">About</a>

@@ -1,3 +1,7 @@
+<?php
+session_start();
+$id_pengguna = $_SESSION['user_id']; // asumsinya sudah login dan session diset
+?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -7,45 +11,71 @@
     <link rel="stylesheet" href="public/bootstrap/css/bootstrap.css">
 </head>
 
-<body class="container mt-5">
+<body>
 
-    <h3 class="mb-4">Form Pemilihan Hobi</h3>
+    <?php require "layouts/header.php" ?>
+    <div class="container mt-5">
+        <h3 class="mb-4">Form Pemilihan Hobi</h3>
 
-    <form action="simpanHobi.php" method="post">
-        <div class="mb-3">
-            <label for="hobi" class="form-label">Pilih Hobi Anda:</label>
-            <select class="form-select" name="hobi[]" id="hobi" multiple required>
-                <option value="1">Menggambar</option>
-                <option value="2">Coding</option>
-                <option value="3">Membaca</option>
-                <option value="4">Menari</option>
-                <option value="5">Bermusik</option>
-                <option value="6">Olahraga</option>
-                <option value="7">Menulis</option>
-                <option value="8">Bermain Game</option>
-                <option value="9">Traveling</option>
-                <option value="10">Memasak</option>
-                <option value="11">Fotografi</option>
-                <option value="12">Berbicara di depan umum</option>
-                <option value="13">Membuat Kerajinan</option>
-                <option value="14">Mengutak-atik Elektronik</option>
-                <option value="15">Mengajar</option>
-                <option value="16">Berdiskusi</option>
-                <option value="17">Menganalisis</option>
-                <option value="18">Desain Interior</option>
-                <option value="19">Bertanam</option>
-                <option value="20">Menonton Film</option>
-            </select>
-            <small class="text-muted">Gunakan Ctrl/Command untuk memilih lebih dari satu.</small>
-        </div>
+        <form action="simpanHobi.php" method="post">
+            <div class="mb-3">
+                <label class="form-label">Pilih Hobi Anda:</label>
+                <div class="row">
+                    <div class="col-md-6">
+                        <?php
+                        $hobi = [
+                            1 => 'Menggambar',
+                            2 => 'Coding',
+                            3 => 'Membaca',
+                            4 => 'Menari',
+                            5 => 'Bermusik',
+                            6 => 'Olahraga',
+                            7 => 'Menulis',
+                            8 => 'Bermain Game',
+                            9 => 'Traveling',
+                            10 => 'Memasak'
+                        ];
+                        foreach ($hobi as $id => $nama) {
+                            echo '<div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="hobi[]" value="' . $id . '" id="hobi' . $id . '">
+                            <label class="form-check-label" for="hobi' . $id . '">' . $nama . '</label>
+                            </div>';
+                        }
+                        ?>
+                    </div>
+                    <div class="col-md-6">
+                        <?php
+                        $hobi2 = [
+                            11 => 'Fotografi',
+                            12 => 'Berbicara di depan umum',
+                            13 => 'Membuat Kerajinan',
+                            14 => 'Mengutak-atik Elektronik',
+                            15 => 'Mengajar',
+                            16 => 'Berdiskusi',
+                            17 => 'Menganalisis',
+                            18 => 'Desain Interior',
+                            19 => 'Bertanam',
+                            20 => 'Menonton Film'
+                        ];
+                        foreach ($hobi2 as $id => $nama) {
+                            echo '<div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="hobi[]" value="' . $id . '" id="hobi' . $id . '">
+                            <label class="form-check-label" for="hobi' . $id . '">' . $nama . '</label>
+                            </div>';
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
 
-        <!-- Anggap user login, ID user disimpan di session -->
-        <input type="hidden" name="id_pengguna" value="1">
+            <!-- Ini bagian yang sebelumnya salah -->
+            <input type="hidden" name="id_pengguna" value="<?= $id_pengguna ?>">
 
-        <button type="submit" class="btn btn-primary">Simpan</button>
-    </form>
+            <button type="submit" class="btn btn-primary">Simpan</button>
+        </form>
+    </div>
 
-
+    <?php require "layouts/footer.php" ?>
     <script src="public/bootstrap/js/bootstrap.js"></script>
 </body>
 
