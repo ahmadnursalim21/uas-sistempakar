@@ -1,6 +1,4 @@
 <?php session_start();
-$id_pengguna = $_SESSION['user_id'];
-$_SESSION['username']
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
