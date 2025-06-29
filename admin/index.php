@@ -1,3 +1,7 @@
+<?php
+require "../middleware/admin.php";
+
+?>
 <!DOCTYPE html>
 <html lang="id">
 

@@ -1,6 +1,9 @@
 <?php
-session_start();
-require_once "middleware/auth.php";
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+require "middleware/auth.php";
 $id_pengguna = $_SESSION['user_id']; // asumsinya sudah login dan session diset
 ?>
 <!DOCTYPE html>
@@ -13,10 +16,10 @@ $id_pengguna = $_SESSION['user_id']; // asumsinya sudah login dan session diset
         integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
-        html,
-        body {
-            height: 100%;
-        }
+    html,
+    body {
+        height: 100%;
+    }
     </style>
 </head>
 
@@ -49,7 +52,7 @@ $id_pengguna = $_SESSION['user_id']; // asumsinya sudah login dan session diset
                                     6 => 'Olahraga',
                                     7 => 'Menulis',
                                     8 => 'Bermain Game',
-                                    9 => 'Traveling',
+                                    9 => 'Travelling',
                                     10 => 'Memasak'
                                 ];
                                 foreach ($hobi as $id => $nama) {

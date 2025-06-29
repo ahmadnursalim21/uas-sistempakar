@@ -8,10 +8,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <style>
-        html,
-        body {
-            height: 100%;
-        }
+    html,
+    body {
+        height: 100%;
+    }
     </style>
 </head>
 
@@ -53,8 +53,8 @@
                         <li><i class="bi bi-telephone-fill me-2"></i>(021) 123-4567</li>
                     </ul>
                     <p>
-                        Kami siap membantu menjawab pertanyaan Anda seputar Sistem Pakar ini.
-                        Jangan ragu untuk menghubungi kami!
+                        Kami Siap Membantu Menjawab Pertanyaan Anda Seputar Sistem Pakar Ini.
+                        Jangan Ragu Untuk Menghubungi kami!
                     </p>
                 </div>
             </div>
@@ -64,7 +64,6 @@
     <?php include "layouts/footer.php" ?>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <script src="public/bootstrap/js/bootstrap.js"></script>
 </body>
 
 </html>

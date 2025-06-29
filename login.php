@@ -1,5 +1,8 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once "middleware/isLogin.php";
 require "database/database.php";
 
@@ -79,7 +82,7 @@ if (isset($_POST["submit"])) {
                 </div>
                 <div class="text-center mt-3">
                     <p>Apakah kamu belum mempunyai akun ? <a href="register.php">Register
-                            sekrang</a> </p>
+                            sekarang</a> </p>
                 </div>
             </form>
         </div>

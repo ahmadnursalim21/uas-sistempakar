@@ -1,34 +1,38 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+require "middleware/auth.php";
 require "database/database.php";
 
-$id_pengguna = $_POST['id_pengguna'];
-$hobi_terpilih = $_POST['hobi'] ?? [];
-
-
-// Cek apakah pengguna valid di tabel users
-$cek = $conn->prepare("SELECT id FROM users WHERE id = ?");
-$cek->bind_param("i", $id_pengguna);
-$cek->execute();
-$cek->store_result();
-
-if ($cek->num_rows === 0) {
-    echo "<script>alert('Pengguna tidak ditemukan.'); window.location.href='pilihHobi.php';</script>";
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
     exit;
 }
 
-// Hapus hobi lama dengan prepared statement
-$stmtDel = $conn->prepare("DELETE FROM hobi_users WHERE id_pengguna = ?");
-$stmtDel->bind_param("i", $id_pengguna);
-$stmtDel->execute();
+$id_pengguna = $_SESSION['user_id'];
+$hobi = $_POST['hobi'] ?? [];
 
-// Simpan hobi baru
-$stmt = $conn->prepare("INSERT INTO hobi_users (id_pengguna, id_hobi) VALUES (?, ?)");
-foreach ($hobi_terpilih as $id_hobi) {
-    $stmt->bind_param("ii", $id_pengguna, $id_hobi);
-    $stmt->execute();
+if (empty($hobi)) {
+    echo "<script>alert('Anda belum memilih hobi.'); window.location.href='pilihHobi.php';</script>";
+    exit;
 }
 
+// Hapus data lama (opsional)
+$sql = "DELETE FROM hobi_users WHERE id_pengguna = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id_pengguna);
+$stmt->execute();
 
+// Insert hobi yang baru
+$sql_insert = "INSERT INTO hobi_users (id_pengguna, id_hobi) VALUES (?, ?)";
+$stmt_insert = $conn->prepare($sql_insert);
 
+foreach ($hobi as $id_hobi) {
+    $stmt_insert->bind_param("ii", $id_pengguna, $id_hobi);
+    $stmt_insert->execute();
+}
 
-echo "<script>alert('Hobi berhasil disimpan!'); window.location.href='rekomendasiJurusan.php';</script>";
+header("Location: rekomendasiJurusan.php");
+exit;
