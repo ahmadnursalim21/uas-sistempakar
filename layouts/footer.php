@@ -2,8 +2,8 @@
     <div class="container text-center text-md-start">
         <div class="row">
             <div class="col-md-4 mb-3">
-                <h5>MyWebsite</h5>
-                <p>Website layanan terbaik untuk kebutuhan Anda.</p>
+                <h5>Sistem pakar jurusan</h5>
+                <p>Solusi cerdas untuk membantu Anda memilih jurusan sesuai minat dan bakat.</p>
             </div>
             <div class="col-md-4 mb-3">
                 <h5>Menu</h5>

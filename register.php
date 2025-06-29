@@ -1,4 +1,5 @@
 <?php
+require_once "middleware/isLogin.php";
 require "database/database.php";
 if (isset($_POST['submit'])) {
     $username = $_POST['username'];
@@ -26,7 +27,8 @@ if (isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register | Page</title>
-    <link rel="stylesheet" href="public/bootstrap/css/bootstrap.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
 </head>
 
 <body>
@@ -60,7 +62,9 @@ if (isset($_POST['submit'])) {
     </div>
 
 
-    <script src="public/bootstrap/js/bootstrap.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous">
+    </script>
 </body>
 
 </html>
