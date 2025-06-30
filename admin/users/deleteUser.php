@@ -18,10 +18,10 @@ $stmt->execute();
 
 if ($stmt->affected_rows > 0) {
     // Berhasil dihapus
-    header("Location: listUsers.php?message=deleted");
+    header("Location: index.php?message=deleted");
 } else {
     // Gagal (misalnya ID tidak ditemukan)
-    header("Location: listUsers.php?message=error");
+    header("Location: index.php?message=error");
 }
 
 $stmt->close();

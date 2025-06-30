@@ -2,23 +2,56 @@
 require "../../middleware/admin.php";
 require "../../database/database.php";
 
-// Ambil ID user dari parameter URL
-$id = $_GET['id'] ?? 0;
+// Proses simpan perubahan
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $id = (int)$_POST["id"];
+    $name = $_POST["name"];
+    $email = $_POST["email"];
+    $role = $_POST["role"];
 
-// Query data user
+    $sql = "UPDATE users SET name = ?, email = ?, role = ? WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    if ($stmt) {
+        $stmt->bind_param("sssi", $name, $email, $role, $id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows >= 0) {
+            // Redirect ke halaman list users
+            header("Location: http://localhost/uas-sistempakar-s6/admin/users/");
+            exit;
+        } else {
+            die("Update gagal: " . $conn->error);
+        }
+    } else {
+        die("Prepare statement gagal: " . $conn->error);
+    }
+}
+
+// Kalau bukan POST → tampilkan data user
+if (!isset($_GET['id'])) {
+    header("Location: index.php");
+    exit;
+}
+
+$id = (int)$_GET['id'];
+
 $sql = "SELECT * FROM users WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id);
 $stmt->execute();
 $result = $stmt->get_result();
+
+if (!$result) {
+    die("Query error: " . $conn->error);
+}
+
 $user = $result->fetch_assoc();
 
 if (!$user) {
-    echo "<script>alert('Data user tidak ditemukan.'); window.location.href='listUsers.php';</script>";
+    echo "<script>alert('Data user tidak ditemukan.'); window.location.href='index.php';</script>";
     exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 
@@ -85,7 +118,7 @@ if (!$user) {
 
                     <div class="card">
                         <div class="card-body">
-                            <form action="updateUser.php" method="post">
+                            <form action="editUser.php" method="post">
                                 <input type="hidden" name="id" value="<?= htmlspecialchars($user['id']) ?>">
 
                                 <div class="mb-3">

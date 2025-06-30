@@ -1,3 +1,31 @@
+<?php
+require_once "../../middleware/admin.php";
+require_once "../../database/database.php";
+
+if (isset($_POST["submit"])) {
+    $name = $_POST["name"];
+    $email = $_POST["email"];
+    $role = $_POST["role"];
+    $password = $_POST["password"];
+    $hash_password = password_hash($password, PASSWORD_DEFAULT);
+
+    $stmt = mysqli_prepare($conn, "INSERT INTO users (name, email, role, password) VALUES (?, ?, ?, ?)");
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, "ssss", $name, $email, $role, $hash_password);
+        $result = mysqli_stmt_execute($stmt);
+
+        if ($result) {
+            header("Location: http://localhost/uas-sistempakar-s6/admin/users/");
+            exit;
+        } else {
+            echo "Data tidak berhasil dikirim: " . mysqli_error($conn);
+        }
+        mysqli_stmt_close($stmt);
+    } else {
+        echo "Prepare statement error: " . mysqli_error($conn);
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -53,7 +81,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <form action="storeUser.php" method="post">
+                    <form action="createUser.php" method="post">
                         <div class="mb-3">
                             <label for="name" class="form-label">Nama</label>
                             <input type="text" class="form-control" id="name" name="name" required
@@ -81,7 +109,7 @@
                             </select>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" name="submit" class="btn btn-primary">
                             <i class="bi bi-save me-1"></i> Simpan
                         </button>
                         <a href="http://localhost/uas-sistempakar-s6/admin/users/" class="btn btn-secondary">Batal</a>
