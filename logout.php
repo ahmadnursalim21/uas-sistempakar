@@ -6,5 +6,5 @@ session_unset();
 session_destroy();
 
 // Redirect ke halaman login atau beranda
-header("Location: login.php");
+header("Location: http://localhost/uas-sistempakar-s6/login.php");
 exit;
