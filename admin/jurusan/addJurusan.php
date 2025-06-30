@@ -1,3 +1,29 @@
+<?php
+require_once "../../middleware/admin.php";
+require_once "../../database/database.php";
+
+if (isset($_POST["submit"])) {
+    $nama = $_POST["nama"];
+    var_dump(value: $nama);
+
+    $stmt = mysqli_prepare($conn, "INSERT INTO jurusan (nama) VALUES (?)");
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, "s", $nama,);
+        $result = mysqli_stmt_execute($stmt);
+
+        if ($result) {
+            header("Location: http://localhost/uas-sistempakar-s6/admin/jurusan/");
+            exit;
+        } else {
+            echo "Data tidak berhasil dikirim: " . mysqli_error($conn);
+        }
+        mysqli_stmt_close($stmt);
+    } else {
+        echo "Prepare statement error: " . mysqli_error($conn);
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -49,14 +75,14 @@
 
             <div class="card">
                 <div class="card-body">
-                    <form action="storeJurusan.php" method="post">
+                    <form action="addJurusan.php" method="post">
                         <div class="mb-3">
                             <label for="nama" class="form-label">Nama Jurusan</label>
                             <input type="text" class="form-control" id="nama" name="nama" required
                                 placeholder="Masukkan nama jurusan">
                         </div>
 
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" name="submit" class="btn btn-primary">
                             <i class="bi bi-save me-1"></i> Simpan
                         </button>
                         <a href="http://localhost/uas-sistempakar-s6/admin/jurusan/" class="btn btn-secondary">Batal</a>

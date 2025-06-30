@@ -1,24 +1,51 @@
 <?php
+require "../../middleware/admin.php";
 require "../../database/database.php";
 
-// Ambil ID jurusan dari URL
-$id = $_GET['id'] ?? null;
+// Proses simpan perubahan
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $id = (int)$_POST["id"];
+    $nama = $_POST["nama"];
 
-if (!$id) {
-    echo "<script>alert('ID jurusan tidak ditemukan.'); window.location.href='listJurusan.php';</script>";
+    $sql = "UPDATE jurusan SET nama = ? WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    if ($stmt) {
+        $stmt->bind_param("si", $nama, $id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows >= 0) {
+            header("Location: http://localhost/uas-sistempakar-s6/admin/jurusan/");
+            exit;
+        } else {
+            die("Update gagal: " . $conn->error);
+        }
+    } else {
+        die("Prepare statement gagal: " . $conn->error);
+    }
+}
+
+// Kalau bukan POST → tampilkan data hobi
+if (!isset($_GET['id'])) {
+    header("Location: index.php");
     exit;
 }
 
-// Query data jurusan
+$id = (int)$_GET['id'];
+
 $sql = "SELECT * FROM jurusan WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id);
 $stmt->execute();
 $result = $stmt->get_result();
+
+if (!$result) {
+    die("Query error: " . $conn->error);
+}
+
 $jurusan = $result->fetch_assoc();
 
 if (!$jurusan) {
-    echo "<script>alert('Data jurusan tidak ditemukan.'); window.location.href='listJurusan.php';</script>";
+    echo "<script>alert('Data jurusan tidak ditemukan.'); window.location.href='index.php';</script>";
     exit;
 }
 ?>
@@ -74,7 +101,7 @@ if (!$jurusan) {
 
             <div class="card">
                 <div class="card-body">
-                    <form action="updateJurusan.php" method="post">
+                    <form action="editJurusan.php" method="post">
                         <input type="hidden" name="id" value="<?= htmlspecialchars($jurusan['id']) ?>">
 
                         <div class="mb-3">
