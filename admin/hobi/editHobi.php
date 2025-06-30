@@ -1,27 +1,55 @@
 <?php
+require "../../middleware/admin.php";
 require "../../database/database.php";
 
-// Tangkap ID hobi dari parameter GET
-$id = $_GET['id'] ?? null;
+// Proses simpan perubahan
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $id = (int)$_POST["id"];
+    $nama = $_POST["nama"];
 
-if (!$id) {
-    echo "<script>alert('ID Hobi tidak ditemukan.'); window.location.href='listHobi.php';</script>";
+    $sql = "UPDATE hobi SET nama = ? WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    if ($stmt) {
+        $stmt->bind_param("si", $nama, $id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows >= 0) {
+            header("Location: http://localhost/uas-sistempakar-s6/admin/hobi/");
+            exit;
+        } else {
+            die("Update gagal: " . $conn->error);
+        }
+    } else {
+        die("Prepare statement gagal: " . $conn->error);
+    }
+}
+
+// Kalau bukan POST → tampilkan data hobi
+if (!isset($_GET['id'])) {
+    header("Location: index.php");
     exit;
 }
 
-// Ambil data hobi
+$id = (int)$_GET['id'];
+
 $sql = "SELECT * FROM hobi WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id);
 $stmt->execute();
 $result = $stmt->get_result();
+
+if (!$result) {
+    die("Query error: " . $conn->error);
+}
+
 $hobi = $result->fetch_assoc();
 
 if (!$hobi) {
-    echo "<script>alert('Data hobi tidak ditemukan.'); window.location.href='listHobi.php';</script>";
+    echo "<script>alert('Data hobi tidak ditemukan.'); window.location.href='index.php';</script>";
     exit;
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="id">
@@ -76,7 +104,7 @@ if (!$hobi) {
 
             <div class="card">
                 <div class="card-body">
-                    <form action="updateHobi.php" method="post">
+                    <form action="editHobi.php" method="post">
                         <input type="hidden" name="id" value="<?= htmlspecialchars($hobi['id']) ?>">
 
                         <div class="mb-3">

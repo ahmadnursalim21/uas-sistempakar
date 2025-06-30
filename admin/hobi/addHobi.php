@@ -1,3 +1,28 @@
+<?php
+require_once "../../middleware/admin.php";
+require_once "../../database/database.php";
+
+if (isset($_POST["submit"])) {
+    $nama = $_POST["nama"];
+
+    $stmt = mysqli_prepare($conn, "INSERT INTO hobi (nama) VALUES (?)");
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, "s", $nama,);
+        $result = mysqli_stmt_execute($stmt);
+
+        if ($result) {
+            header("Location: http://localhost/uas-sistempakar-s6/admin/hobi/");
+            exit;
+        } else {
+            echo "Data tidak berhasil dikirim: " . mysqli_error($conn);
+        }
+        mysqli_stmt_close($stmt);
+    } else {
+        echo "Prepare statement error: " . mysqli_error($conn);
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 
